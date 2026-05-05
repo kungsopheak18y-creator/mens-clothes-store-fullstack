@@ -27,13 +27,18 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors({ 
-  origin: [
-    'http://localhost:5173',
-    'https://mens-clothes-store-fullstack.vercel.app',
-    'https://mens-clothes-store-fullstack-hmy6uev06.vercel.app'
-  ], 
-  credentials: true 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (
+      origin.includes('vercel.app') ||
+      origin.includes('localhost')
+    ) {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
 }));
 app.use(helmet({
   crossOriginResourcePolicy: false,
