@@ -40,10 +40,17 @@ export const register = async (req, res) => {
 
     const token = generateToken(user.id, user.email, user.role);
 
+    // res.cookie('token', token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: 'strict',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
+
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: true, // 👈 must be true for cross-domain
+      sameSite: 'none', // 👈 change from 'strict' to 'none' for cross-domain
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -88,11 +95,18 @@ export const login = async (req, res) => {
 
     const token = generateToken(user.id, user.email, user.role);
 
-    res.cookie('token', token, {
+    // res.cookie('token', token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: 'strict',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
+
+    res.cookie('token', '', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: true,
+      sameSite: 'none',
+      expires: new Date(0)
     });
 
     res.json({
