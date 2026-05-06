@@ -17,13 +17,10 @@ export default function Login() {
     setError('');
     try {
       const res = await api.post('/api/auth/login', { identifier, password });
-      const userId = res.data.user.id;
-
-      // 👇 switch to this user's own cart key
-      useCartStore.persist.setOptions({ name: `cart-storage-${userId}` });
+      clearCart();
+      useCartStore.persist.setOptions({ name: `cart-storage-${res.data.user.id}` });
       await useCartStore.persist.rehydrate();
-
-      setUser(res.data.user);
+      setUser(res.data.user, res.data.token); // 👈 pass token
       navigate('/home');
     } catch (err) {
       const msg = err.response?.data?.error || 'Login failed';
