@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Rate limiting per route
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5, keyGenerator: (req) => req.ip });
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 50, keyGenerator: (req) => req.ip });
 app.use('/api/auth', authLimiter);
 
 const orderLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 50, keyGenerator: (req) => req.user?.id || req.ip });
