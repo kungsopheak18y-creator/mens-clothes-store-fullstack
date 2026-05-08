@@ -31,13 +31,13 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 ">
+      <div className="bg-white p-8 rounded shadow-md w-96 rounded-3xl">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder="Email or Phone" className="w-full border p-2 mb-4 rounded" value={identifier} onChange={e => setIdentifier(e.target.value)} required />
           <input type="password" placeholder="Password" className="w-full border p-2 mb-4 rounded" value={password} onChange={e => setPassword(e.target.value)} required />
-          <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Login</button>
+          <button className="w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700">Login</button>
         </form>
         {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
         <p className="text-center text-sm mt-4">Don't have an account? <Link to="/register" className="text-blue-600">Register</Link></p>

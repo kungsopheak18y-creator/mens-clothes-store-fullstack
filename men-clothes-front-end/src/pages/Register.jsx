@@ -25,7 +25,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
+      <div className="bg-white p-8 rounded-3xl shadow-md w-96">
         <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
         <form onSubmit={handleSubmit}>
           <input name="name" placeholder="Full Name" className="w-full border p-2 mb-3 rounded" onChange={handleChange} required />
@@ -33,7 +33,7 @@ export default function Register() {
           <input name="phone" placeholder="Phone Number" className="w-full border p-2 mb-3 rounded" onChange={handleChange} required />
           <input name="password" type="password" placeholder="Password" className="w-full border p-2 mb-3 rounded" onChange={handleChange} required />
           <input name="confirmPassword" type="password" placeholder="Confirm Password" className="w-full border p-2 mb-4 rounded" onChange={handleChange} required />
-          <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Register</button>
+          <button className="w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700">Register</button>
         </form>
         {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
         <p className="text-center text-sm mt-4">Already have an account? <Link to="/login" className="text-blue-600">Login</Link></p>
