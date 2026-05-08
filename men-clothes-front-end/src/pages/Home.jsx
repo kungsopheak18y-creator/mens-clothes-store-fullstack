@@ -146,8 +146,8 @@ export default function Home() {
                 </div>
               ))}
 
-              <h2 className="text-4xl md:text-5xl font-mono font-light text-brand-900 leading-[1.15] mb-8 pt-20 px-10">
-                Dear customer<br />enjoy your online shopping today.
+              <h2 className="text-4xl md:text-5xl font-mono font-light text-brand-900 leading-[1.15] mb-8 pt-7 px-6">
+                Dear customer<br />please enjoy your online shopping here.
               </h2>
             </div>
 
