@@ -41,8 +41,8 @@ export default function AdminDashboard() {
     try {
       const [productsRes, categoriesRes, brandsRes, ordersRes] = await Promise.all([
         api.get('/api/products'),
-        api.get('/api/categories'),        // ✅ fixed endpoint
-        api.get('/api/brands'),            // ✅ fixed endpoint
+        api.get('/api/categories'),       
+        api.get('/api/brands'),            
         api.get('/api/orders/admin/all'),
       ]);
       setProducts(productsRes.data);
@@ -176,7 +176,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // ✅ Fixed: now supports both create AND edit, uses correct endpoints
   const openCatBrandModal = (type, item = null) => {
     setCatBrandType(type);
     setEditingCatBrand(item);
@@ -502,7 +501,7 @@ export default function AdminDashboard() {
                       <input type="file" multiple accept="image/*" className="hidden" onChange={handleImageSelect} />
                     </label>
                   </div>
-                  <p className="text-xs text-gray-500">Click + to add images. Click × to remove.</p>
+                  <p className="text-xs text-gray-500">Click + to add images. Click x to remove.</p>
                 </div>
               </div>
               <div className="flex justify-end gap-3 mt-6">
