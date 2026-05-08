@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMedal, faTruck, faHeadset, faEnvelope, faPhone, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faMedal, faTruck, faHeadset, faEnvelope, faPhone, faLocationDot, faArrowRight, faStar, faShield } from '@fortawesome/free-solid-svg-icons';
 import api from '../lib/api';
 import ProductCard from '../components/product/ProductCard';
 import PageTransition from '../components/ui/PageTransition';
@@ -27,7 +27,7 @@ export default function Home() {
     <PageTransition>
 
       {/* Hero */}
-      <div className="relative bg-gradient-to-r from-brand-900 via-brand-800 to-brand-900 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-r from-brand-900 via-brand-800 to-brand-900 text-white overflow-hidden rounded-3xl">
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5 mix-blend-overlay" />
         <div className="container-premium py-24 md:py-32 text-center relative z-10">
           <h1 className="text-5xl md:text-6xl font-mono font-light tracking-wide">Men's Fashion Collection</h1>
@@ -98,18 +98,22 @@ export default function Home() {
               </p>
 
               {/* Stats row */}
-              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-brand-100">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-6 pt-8 border-t border-brand-100">
                 {[
-                  { num: '500+', label: 'Products' },
-                  { num: '10K+', label: 'Customers' },
-                  { num: '100%', label: 'Authentic' },
+                  { num: '500+', label: 'Products', icon: faShield },
+                  { num: '10K+', label: 'Customers', icon: faStar },
+                  { num: '100%', label: 'Authentic', icon: faMedal },
                 ].map((s, i) => (
-                  <div key={i}>
-                    <p className="text-3xl font-light text-brand-900 tracking-tight">{s.num}</p>
-                    <p className="text-xs text-brand-400 uppercase tracking-widest mt-1">{s.label}</p>
+                  <div key={i} className="flex-1 w-full bg-brand-50 border border-brand-100 rounded-2xl p-8 hover:shadow-md hover:bg-white transition group text-center">
+                    <div className="w-12 h-12 rounded-xl bg-white border border-brand-100 flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-50 transition">
+                      <FontAwesomeIcon icon={s.icon} className="text-brand-500 text-base" />
+                    </div>
+                    <p className="text-4xl font-light text-brand-900 tracking-tight mb-1">{s.num}</p>
+                    <p className="text-xs text-brand-400 uppercase tracking-widest">{s.label}</p>
                   </div>
                 ))}
               </div>
+
             </div>
 
             {/* Right — 3 values */}
@@ -141,9 +145,32 @@ export default function Home() {
                   </div>
                 </div>
               ))}
+
+              <h2 className="text-4xl md:text-5xl font-mono font-light text-brand-900 leading-[1.15] mb-8 pt-20 px-10">
+                Dear customer<br />enjoy your online shopping today.
+              </h2>
             </div>
 
           </div>
+
+          {/* Stats row
+          <div className="flex justify-center pt-8 border-t border-brand-100">
+            <div className="flex flex-col sm:flex-row gap-6 w-full max-w-3xl">
+              {[
+                { num: '500+', label: 'Products', icon: faShield },
+                { num: '10K+', label: 'Customers', icon: faStar },
+                { num: '100%', label: 'Authentic', icon: faMedal },
+              ].map((s, i) => (
+                <div key={i} className="flex-1 bg-brand-50 border border-brand-100 rounded-3xl p-12 hover:shadow-md hover:bg-white transition group text-center">
+                  <div className="w-14 h-14 rounded-xl bg-white border border-brand-100 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-50 transition">
+                    <FontAwesomeIcon icon={s.icon} className="text-brand-500 text-lg" />
+                  </div>
+                  <p className="text-5xl font-light text-brand-900 tracking-tight mb-2">{s.num}</p>
+                  <p className="text-xs text-brand-400 uppercase tracking-widest">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div> */}
         </div>
       </div>
 
