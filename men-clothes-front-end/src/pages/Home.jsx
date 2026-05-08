@@ -148,58 +148,70 @@ export default function Home() {
       </div>
 
       {/* ── CONTACT ── */}
-      <div id="contact" className="bg-brand-900 py-20">
+      <div id="contact" className="bg-premium-light py-20 border-t border-brand-100">
         <div className="container-premium">
 
-          {/* Top label */}
-          <div className="flex items-center gap-3 mb-14">
-            <div className="h-px bg-brand-700 w-12" />
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-16">
+            <div className="h-px bg-brand-200 w-12" />
             <span className="text-xs tracking-[0.2em] uppercase text-brand-400 font-medium">Contact</span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
 
             {/* Left */}
             <div>
-              <h2 className="text-4xl md:text-5xl font-serif font-light text-white leading-[1.15] mb-6">
-                Let's talk.
+              <h2 className="text-4xl md:text-5xl font-serif font-light text-brand-900 leading-[1.15] mb-6">
+                We're here<br />whenever you need us.
               </h2>
-              <p className="text-brand-400 text-base leading-relaxed max-w-sm">
-                Got a question about an order, sizing, or anything else? We're quick to respond and happy to help.
+              <p className="text-brand-500 text-base leading-relaxed max-w-sm">
+                Got a question about sizing, an order, or just want to say hello — we're quick to respond and always happy to help.
               </p>
+
+              {/* Bottom tag */}
+              <div className="mt-10 inline-flex items-center gap-2 px-4 py-2 bg-white border border-brand-100 rounded-full shadow-sm">
+                <div className="w-2 h-2 rounded-full bg-green-400" />
+                <span className="text-xs text-brand-500">Usually replies within a few hours</span>
+              </div>
             </div>
 
             {/* Right — contact list */}
-            <div className="space-y-0 divide-y divide-brand-800">
+            <div className="divide-y divide-brand-100">
               {[
                 {
                   icon: faEnvelope,
-                  label: 'Email',
+                  label: 'Email us',
                   value: 'support@mensstore.com',
                   note: 'Reply within 24 hours',
+                  bg: 'bg-blue-50',
+                  color: 'text-blue-500',
                 },
                 {
                   icon: faPhone,
-                  label: 'Phone',
+                  label: 'Call us',
                   value: '+855 96 365 9813',
                   note: 'Mon – Sat, 9am – 6pm',
+                  bg: 'bg-green-50',
+                  color: 'text-green-500',
                 },
                 {
                   icon: faLocationDot,
-                  label: 'Location',
+                  label: 'Visit us',
                   value: 'Phnom Penh, Cambodia',
-                  note: 'Come visit us in store',
+                  note: 'Come see us in store',
+                  bg: 'bg-orange-50',
+                  color: 'text-orange-500',
                 },
               ].map((c, i) => (
                 <div key={i} className="flex items-center gap-5 py-6 group">
-                  <div className="w-10 h-10 rounded-lg bg-brand-800 flex items-center justify-center shrink-0 group-hover:bg-brand-700 transition">
-                    <FontAwesomeIcon icon={c.icon} className="text-brand-300 text-sm" />
+                  <div className={`w-11 h-11 rounded-xl ${c.bg} flex items-center justify-center shrink-0 transition group-hover:scale-105`}>
+                    <FontAwesomeIcon icon={c.icon} className={`${c.color} text-base`} />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-xs text-brand-500 uppercase tracking-widest mb-0.5">{c.label}</p>
-                    <p className="text-white text-sm font-medium">{c.value}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-brand-400 uppercase tracking-widest mb-0.5">{c.label}</p>
+                    <p className="text-brand-900 text-sm font-medium">{c.value}</p>
                   </div>
-                  <p className="text-brand-600 text-xs hidden md:block">{c.note}</p>
+                  <span className="text-xs text-brand-300 hidden md:block shrink-0">{c.note}</span>
                 </div>
               ))}
             </div>
