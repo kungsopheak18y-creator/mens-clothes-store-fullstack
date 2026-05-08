@@ -30,8 +30,8 @@ export default function Home() {
       <div className="relative bg-gradient-to-r from-brand-900 via-brand-800 to-brand-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5 mix-blend-overlay" />
         <div className="container-premium py-24 md:py-32 text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-serif font-light tracking-wide">Men's Fashion Collection</h1>
-          <p className="text-xl text-brand-100 mt-4">Discover timeless elegance and modern style</p>
+          <h1 className="text-5xl md:text-6xl font-mono font-light tracking-wide">Men's Fashion Collection</h1>
+          <p className="text-xl text-brand-100 mt-4 font-mono">Discover timeless elegance and modern style</p>
           <Link to="/shop" className="inline-block bg-white text-brand-900 px-8 py-3 rounded-full font-medium hover:bg-brand-50 transition mt-8 shadow-lg">Shop Now</Link>
         </div>
       </div>
@@ -87,7 +87,7 @@ export default function Home() {
 
             {/* Left — headline + story */}
             <div>
-              <h2 className="text-4xl md:text-5xl font-serif font-light text-brand-900 leading-[1.15] mb-8">
+              <h2 className="text-4xl md:text-5xl font-mono font-light text-brand-900 leading-[1.15] mb-8">
                 Clothing that works<br />as hard as you do.
               </h2>
               <p className="text-brand-500 text-base leading-relaxed mb-5">
@@ -161,7 +161,7 @@ export default function Home() {
 
             {/* Left */}
             <div>
-              <h2 className="text-4xl md:text-5xl font-serif font-light text-brand-900 leading-[1.15] mb-6">
+              <h2 className="text-4xl md:text-5xl font-mono font-light text-brand-900 leading-[1.15] mb-6">
                 We're here<br />whenever you need us.
               </h2>
               <p className="text-brand-500 text-base leading-relaxed max-w-sm">
@@ -181,26 +181,26 @@ export default function Home() {
                 {
                   icon: faEnvelope,
                   label: 'Email us',
-                  value: 'support@mensstore.com',
+                  value: 'admin@mensstore.com',
                   note: 'Reply within 24 hours',
-                  bg: 'bg-blue-50',
-                  color: 'text-blue-500',
+                  bg: 'bg-brand-100',
+                  color: 'text-blue-none',
                 },
                 {
                   icon: faPhone,
                   label: 'Call us',
                   value: '+855 96 365 9813',
-                  note: 'Mon – Sat, 9am – 6pm',
-                  bg: 'bg-green-50',
-                  color: 'text-green-500',
+                  note: 'Mon - Sat, 8am - 8pm',
+                  bg: 'bg-brand-100',
+                  color: 'text-green-none',
                 },
                 {
                   icon: faLocationDot,
                   label: 'Visit us',
                   value: 'Phnom Penh, Cambodia',
                   note: 'Come see us in store',
-                  bg: 'bg-orange-50',
-                  color: 'text-orange-500',
+                  bg: 'bg-brand-100',
+                  color: 'text-orange-none',
                 },
               ].map((c, i) => (
                 <div key={i} className="flex items-center gap-5 py-6 group">

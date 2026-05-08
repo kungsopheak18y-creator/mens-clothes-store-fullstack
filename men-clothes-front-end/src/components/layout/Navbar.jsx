@@ -60,7 +60,7 @@ export default function Navbar() {
       <div className="container-premium py-3 flex justify-between items-center">
 
         {/* Logo */}
-        <Link to="/home" onClick={handleHomeClick} className="text-2xl font-serif font-medium tracking-tight text-brand-900">
+        <Link to="/home" onClick={handleHomeClick} className="text-2xl font-mono font-medium tracking-tight text-brand-900">
           Men's Store
         </Link>
 
