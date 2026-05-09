@@ -71,7 +71,7 @@ export default function AdminDashboard() {
     const filtered = allOrders.filter(order => new Date(order.createdAt) >= startDate);
     setFilteredOrders(filtered);
     const revenue = filtered
-      .filter(o => o.status === 'PAID' || o.status === 'DELIVERED')
+      .filter(o => o.status === 'PAID' || o.status === 'SHIPPED' ||o.status === 'DELIVERED')
       .reduce((sum, o) => sum + o.totalAmount, 0);
     setStats(prev => ({ ...prev, orders: filtered.length, revenue }));
   };
@@ -201,7 +201,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // ✅ Fixed: uses correct endpoints + shows proper error if has products
   const deleteCatBrand = async (type, id) => {
     if (!confirm('Delete this ' + type + '?')) return;
     const base = type === 'category' ? '/api/categories' : '/api/brands';
