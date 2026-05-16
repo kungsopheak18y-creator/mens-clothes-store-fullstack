@@ -1,0 +1,72 @@
+{
+    "size": "M",
+    "color": "Black",
+    "stock": 10,
+    "sku": "AD-HOODIE-BLK-M"
+  },
+  {
+    "size": "L",
+    "color": "Black",
+    "stock": 8,
+    "sku": "AD-HOODIE-BLK-L"
+  },
+  {
+    "size": "XL",
+    "color": "Gray",
+    "stock": 5,
+    "sku": "AD-HOODIE-GRY-XL"
+  }
+
+AAqdeeiinHX2TQbE
+
+
+# Connect to Supabase via connection pooling
+DATABASE_URL="postgresql://postgres.mmvvsrmwpjiqdlqqkyuc:[YOUR-PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+
+# Direct connection to the database. Used for migrations
+DIRECT_URL="postgresql://postgres.mmvvsrmwpjiqdlqqkyuc:[YOUR-PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres"
+
+
+
+
+Mens Nike Club Woven Shorts
+
+59.99
+
+You can't go wrong with these Club Woven Shorts from Nike. They're made from a lightweight woven material to keep you comfortable in any environment.
+
+Nike logo branding
+Elastic waist with adjustable drawstring
+Side pockets
+Back pocket
+Lightweight woven material
+Model is 6'0 wearing size M
+
+Color Shown: Red
+
+[{
+    "size": "S",
+    "color": "Red",
+    "stock": 20,
+    "sku": "NK-SHORT-RED-S"
+  },
+
+{
+    "size": "M",
+    "color": "Red",
+    "stock": 20,
+    "sku": "NK-SHORT-RED-M"
+  },
+  {
+    "size": "L",
+    "color": "Red",
+    "stock": 15,
+    "sku": "NK-SHORT-RED-L"
+  },
+  {
+    "size": "XL",
+    "color": "Red",
+    "stock": 10,
+    "sku": "NK-SHORT-RED-XL"
+  }
+]

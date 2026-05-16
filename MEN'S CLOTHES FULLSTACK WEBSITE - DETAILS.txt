@@ -1,0 +1,945 @@
+# Men's Clothing Backend – Full Codebase Summary
+
+## Overview
+
+This backend is a secure e-commerce REST API built with:
+
+* Node.js
+* Express.js
+* Prisma ORM
+* PostgreSQL
+* JWT Authentication
+* Cloudinary image upload
+* Bakong KHQR payment integration
+
+The project is designed for a men's fashion e-commerce website with:
+
+* User authentication
+* Product management
+* Categories & brands
+* Orders
+* KHQR payments
+* Address management
+* Admin controls
+
+---
+
+# 1. Project Structure
+
+```txt
+src/
+ ├── app.js
+ ├── server.js
+ ├── config/
+ ├── controllers/
+ ├── middleware/
+ ├── routes/
+ ├── services/
+ ├── utils/
+
+prisma/
+ ├── schema.prisma
+ ├── seed.js
+ └── migrations/
+```
+
+---
+
+# 2. Main Technologies Used
+
+## Core Backend
+
+* Express.js → REST API framework
+* Prisma → ORM for PostgreSQL
+* PostgreSQL → Database
+* JWT → Authentication
+* bcryptjs → Password hashing
+
+## Security
+
+* Helmet → Secure HTTP headers
+* CORS → Cross-origin control
+* express-rate-limit → API rate limiting
+* Cookie Parser → Cookie support
+
+## Payments
+
+* bakong-khqr → KHQR generation
+* Axios → NBC API requests
+
+## Uploads
+
+* Multer → File upload middleware
+* Cloudinary → Image storage
+
+## Validation
+
+* Zod → Request validation
+* Envalid → Environment validation
+
+---
+
+# 3. Backend Entry Flow
+
+## server.js
+
+This is the entry point.
+
+### Responsibilities
+
+* Validates environment variables
+* Imports Express app
+* Starts server
+
+```js
+validateEnv();
+app.listen(PORT)
+```
+
+---
+
+# 4. app.js – Main Application Setup
+
+This file configures the entire backend.
+
+## Features Configured
+
+### Security
+
+#### Helmet
+
+Adds secure HTTP headers.
+
+```js
+app.use(helmet())
+```
+
+#### CORS
+
+Allows frontend requests from:
+
+* localhost
+* vercel.app
+
+```js
+origin.includes('vercel.app')
+```
+
+#### Rate Limiting
+
+Different limits for:
+
+| Route        | Limit                 |
+| ------------ | --------------------- |
+| Auth         | 50 requests / 15 min  |
+| Orders       | 50 requests / hour    |
+| Default APIs | 100 requests / 15 min |
+
+---
+
+## Global Middlewares
+
+### express.json()
+
+Parses JSON body.
+
+### cookieParser()
+
+Handles cookies.
+
+---
+
+## Registered Routes
+
+| Route           | Purpose        |
+| --------------- | -------------- |
+| /api/auth       | Authentication |
+| /api/products   | Products       |
+| /api/orders     | Orders         |
+| /api/payment    | Payments       |
+| /api/addresses  | User addresses |
+| /api/brands     | Brand CRUD     |
+| /api/categories | Category CRUD  |
+
+---
+
+## Health Check Endpoint
+
+```http
+GET /api/health
+```
+
+Checks:
+
+* API status
+* PostgreSQL connection
+
+---
+
+# 5. Database Design (Prisma Schema)
+
+The database uses PostgreSQL through Prisma.
+
+---
+
+## User Model
+
+Stores:
+
+* Email
+* Phone
+* Password
+* Profile info
+* Role
+
+### Relations
+
+* One user → many orders
+* One user → many addresses
+
+---
+
+## Product System
+
+### Product
+
+Contains:
+
+* Name
+* Description
+* Price
+* Images
+* Category
+* Brand
+
+### ProductVariant
+
+Handles:
+
+* Size
+* Color
+* Stock
+* SKU
+
+This allows one product to have multiple variants.
+
+Example:
+
+| Product | Size | Color | Stock |
+| ------- | ---- | ----- | ----- |
+| T-Shirt | M    | Black | 20    |
+| T-Shirt | L    | White | 15    |
+
+---
+
+## Category Model
+
+Used to group products.
+
+Example:
+
+* Shirts
+* Pants
+* Shoes
+
+---
+
+## Brand Model
+
+Stores product brands.
+
+Example:
+
+* Nike
+* Adidas
+* Zara
+
+---
+
+## Order System
+
+### Order
+
+Stores:
+
+* User
+* Total amount
+* Status
+* KHQR payment info
+
+### Order Status Enum
+
+```txt
+PENDING
+PAID
+SHIPPED
+DELIVERED
+CANCELLED
+```
+
+---
+
+## OrderItem
+
+Stores each product inside an order.
+
+Includes:
+
+* Product
+* Variant
+* Quantity
+* Price snapshot
+
+---
+
+## Address Model
+
+Supports multiple user addresses.
+
+Fields:
+
+* First name
+* Last name
+* Phone
+* City
+* Country
+* Default address
+
+---
+
+# 6. Authentication System
+
+## Files
+
+```txt
+controllers/auth.controller.js
+middleware/auth.middleware.js
+utils/jwt.js
+```
+
+---
+
+## Registration Flow
+
+### Route
+
+```http
+POST /api/auth/register
+```
+
+### Process
+
+1. Validate input
+2. Check duplicate email/phone
+3. Hash password with bcrypt
+4. Create user
+5. Generate JWT token
+6. Return token + user info
+
+---
+
+## Login Flow
+
+### Route
+
+```http
+POST /api/auth/login
+```
+
+### Features
+
+Supports login using:
+
+* Email
+* Phone number
+
+### Process
+
+1. Find user
+2. Compare password
+3. Generate JWT
+4. Return user data
+
+---
+
+## Protected Routes
+
+Middleware:
+
+```js
+protect
+```
+
+Checks:
+
+* JWT existence
+* JWT validity
+* User identity
+
+---
+
+## Admin Authorization
+
+Middleware:
+
+```js
+adminOnly
+```
+
+Allows only admins to:
+
+* Create products
+* Delete products
+* Manage brands
+* Manage categories
+* Update order status
+
+---
+
+# 7. Product System
+
+## Product Routes
+
+### Public Routes
+
+| Method | Endpoint                 | Purpose        |
+| ------ | ------------------------ | -------------- |
+| GET    | /api/products            | All products   |
+| GET    | /api/products/:id        | Single product |
+| GET    | /api/products/categories | Categories     |
+| GET    | /api/products/brands     | Brands         |
+
+---
+
+## Admin Product Routes
+
+| Method | Endpoint          |
+| ------ | ----------------- |
+| POST   | /api/products     |
+| PUT    | /api/products/:id |
+| DELETE | /api/products/:id |
+
+---
+
+## Product Uploads
+
+Uses:
+
+* Multer
+* Cloudinary
+
+```js
+upload.array('images', 5)
+```
+
+Maximum:
+
+* 5 images per product
+
+---
+
+## Product Validation
+
+Middleware:
+
+```js
+validateProduct
+```
+
+Checks:
+
+* Required fields
+* Valid prices
+* Product data structure
+
+---
+
+# 8. Order System
+
+## Order Routes
+
+### User Actions
+
+| Method | Endpoint               |
+| ------ | ---------------------- |
+| POST   | /api/orders            |
+| GET    | /api/orders/me         |
+| GET    | /api/orders/:id        |
+| DELETE | /api/orders/:id        |
+| PATCH  | /api/orders/:id/cancel |
+
+---
+
+## Admin Actions
+
+| Method | Endpoint               |
+| ------ | ---------------------- |
+| PATCH  | /api/orders/:id/status |
+| GET    | /api/orders/admin/all  |
+
+---
+
+## Order Logic
+
+Main responsibilities:
+
+* Create orders
+* Calculate total
+* Manage stock
+* Store order items
+* Handle cancellations
+
+---
+
+# 9. Payment System (Bakong KHQR)
+
+This backend integrates Cambodia's Bakong KHQR system.
+
+Files:
+
+```txt
+controllers/payment.controller.js
+services/bakong.service.js
+```
+
+---
+
+## Payment Flow
+
+### Step 1: Create Order
+
+User creates an order.
+
+Order status:
+
+```txt
+PENDING
+```
+
+---
+
+### Step 2: Generate KHQR
+
+Endpoint:
+
+```http
+POST /api/payment/initiate/:orderId
+```
+
+System:
+
+* Generates KHQR string
+* Creates MD5 token
+* Stores expiration time
+
+Returns:
+
+```json
+{
+  "qrString": "...",
+  "amount": 120,
+  "expiresAt": "..."
+}
+```
+
+---
+
+### Step 3: Check Payment Status
+
+Endpoint:
+
+```http
+GET /api/payment/status/:orderId
+```
+
+The backend:
+
+* Calls NBC API
+* Verifies MD5 transaction
+* Updates order to PAID
+
+---
+
+### Step 4: Cancel Payment
+
+Endpoint:
+
+```http
+DELETE /api/payment/cancel/:orderId
+```
+
+Logic:
+
+* Restore stock
+* Delete order items
+* Delete order
+
+---
+
+## KHQR Features
+
+### QR Expiration
+
+QR expires after:
+
+```txt
+10 minutes
+```
+
+---
+
+## Payment Status Handling
+
+Possible states:
+
+| Status  | Meaning            |
+| ------- | ------------------ |
+| PENDING | Waiting payment    |
+| PAID    | Payment successful |
+| EXPIRED | QR expired         |
+
+---
+
+# 10. Address System
+
+Users can:
+
+* Add addresses
+* Update addresses
+* Delete addresses
+* Set default address
+
+Routes:
+
+| Method | Endpoint                   |
+| ------ | -------------------------- |
+| GET    | /api/addresses             |
+| POST   | /api/addresses             |
+| PUT    | /api/addresses/:id         |
+| DELETE | /api/addresses/:id         |
+| PATCH  | /api/addresses/:id/default |
+
+---
+
+# 11. Middleware Layer
+
+## auth.middleware.js
+
+Handles:
+
+* JWT verification
+* User authentication
+* Admin role checking
+
+---
+
+## upload.middleware.js
+
+Handles:
+
+* Multer configuration
+* File uploads
+
+---
+
+## validate.js
+
+Uses Zod to validate:
+
+* Register requests
+* Login requests
+
+---
+
+## validateOrder.js
+
+Validates:
+
+* Order payload
+* Product quantities
+
+---
+
+## error.middleware.js
+
+Centralized error handling.
+
+---
+
+# 12. Services Layer
+
+The services layer separates business logic from controllers.
+
+---
+
+## bakong.service.js
+
+Responsibilities:
+
+* Generate KHQR
+* Check NBC payment status
+* Handle payment communication
+
+---
+
+## cloudinary.service.js
+
+Responsibilities:
+
+* Upload images
+* Delete images
+
+---
+
+## order.service.js
+
+Contains reusable order business logic.
+
+---
+
+## product.service.js
+
+Contains reusable product logic.
+
+---
+
+# 13. Security Features
+
+## Password Security
+
+Passwords are hashed using:
+
+```js
+bcrypt.hash(password, 10)
+```
+
+---
+
+## JWT Authentication
+
+Used for:
+
+* User login sessions
+* Protected APIs
+
+---
+
+## CORS Protection
+
+Only trusted frontend domains allowed.
+
+---
+
+## Rate Limiting
+
+Prevents:
+
+* Spam
+* Brute force attacks
+* API abuse
+
+---
+
+## Helmet
+
+Adds secure HTTP headers.
+
+---
+
+# 14. Environment Variables
+
+The backend depends heavily on `.env`.
+
+Likely variables:
+
+```env
+DATABASE_URL=
+DIRECT_URL=
+JWT_SECRET=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+BAKONG_TOKEN=
+BAKONG_ACCOUNT_USERNAME=
+```
+
+---
+
+# 15. Architecture Style
+
+This project follows a layered backend architecture.
+
+```txt
+Routes
+   ↓
+Controllers
+   ↓
+Services
+   ↓
+Prisma ORM
+   ↓
+PostgreSQL
+```
+
+---
+
+# 16. Strengths of This Backend
+
+## Good Separation of Concerns
+
+* Routes handle endpoints
+* Controllers handle request logic
+* Services handle business logic
+* Prisma handles database
+
+---
+
+## Secure Authentication
+
+* JWT
+* bcrypt
+* Admin middleware
+
+---
+
+## Scalable Product System
+
+Product variants support:
+
+* Sizes
+* Colors
+* Stock management
+
+---
+
+## Real Payment Integration
+
+Uses Cambodia NBC Bakong KHQR.
+
+---
+
+## Production Features
+
+Includes:
+
+* Rate limiting
+* Security headers
+* Validation
+* Error handling
+* Environment validation
+
+---
+
+# 17. Overall Backend Purpose
+
+This backend is a complete e-commerce API for a men's clothing store.
+
+It supports:
+
+✅ Authentication
+✅ Product catalog
+✅ Product variants
+✅ Image uploads
+✅ Categories & brands
+✅ Orders
+✅ KHQR payments
+✅ Address management
+✅ Admin dashboard features
+✅ PostgreSQL database
+✅ Secure APIs
+
+---
+
+# 18. Suggested Future Improvements
+
+## Recommended Enhancements
+
+### Add Refresh Tokens
+
+Improve authentication security.
+
+---
+
+### Add Pagination
+
+For products and orders.
+
+Example:
+
+```http
+GET /api/products?page=1&limit=10
+```
+
+---
+
+### Add Search & Filtering
+
+Example:
+
+* Search by name
+* Filter by brand
+* Filter by category
+* Filter by price
+
+---
+
+### Add Swagger Documentation
+
+Generate API docs.
+
+---
+
+### Add Unit Testing
+
+Use:
+
+* Jest
+* Supertest
+
+---
+
+### Add Redis Caching
+
+Improve performance.
+
+---
+
+### Add Payment Webhooks
+
+Automatically confirm payments.
+
+---
+
+### Add Inventory Audit Logs
+
+Track stock history.
+
+---
+
+# Final Summary
+
+This is a well-structured modern Node.js e-commerce backend using:
+
+* Express
+* Prisma
+* PostgreSQL
+* JWT
+* KHQR payments
+
+The backend already includes many production-level concepts:
+
+* Security
+* Validation
+* Admin roles
+* Stock handling
+* Payment processing
+* Upload management
+* Database relations
+* RESTful APIs
+
+It is strong enough to be used as:
+
+* Final year project
+* Portfolio project
+* Startup MVP
+* Real online fashion store backend
